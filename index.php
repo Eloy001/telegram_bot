@@ -37,7 +37,6 @@ switch($message) {
         break;
     default:
         $response = 'No te he entendido';
-        sendMessage($chatId, $response);
         break;
 }
 
