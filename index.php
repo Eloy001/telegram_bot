@@ -35,11 +35,6 @@ switch($message) {
         getNoticiasDeportes($chatId);
         
         break;
-
-        case 'nose':
-            $keyboard_button = array("Good", "Okay", "Fine");
-            $reply_keyboard_markup = array("keyboard" => array($keyboard_button), "resize_keyboard" => true, "one_time_keyboard" => true);
-        break;
     default:
         $response = 'No te he entendido';
         sendMessage($chatId, $response);
