@@ -16,7 +16,7 @@ switch($message) {
         sendMessage($chatId, $response);
         break;
     case '/info':
-        $response = 'Hola! Soy @xCrimson_bot';
+        $response = 'Bienvenido! Soy @xCrimson_bot';
         sendMessage($chatId, $response);
         break;
     case '/help':
@@ -33,6 +33,12 @@ switch($message) {
         break;
     case '/deportes' || 'deportes':
         getNoticiasDeportes($chatId);
+        
+        break;
+
+        case 'nose':
+            $keyboard_button = array("Good", "Okay", "Fine");
+            $reply_keyboard_markup = array("keyboard" => array($keyboard_button), "resize_keyboard" => true, "one_time_keyboard" => true);
         break;
     default:
         $response = 'No te he entendido';
@@ -46,9 +52,7 @@ function sendMessage($chatId, $response) {
 }
 
 
-
 function getNoticiasDeportes($chatId){
-
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $url = "https://e00-marca.uecdn.es/rss/futbol/primera-division.xml";
     $xmlstring = file_get_contents($url, false, $context);
