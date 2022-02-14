@@ -19,6 +19,15 @@ switch($message) {
         $response = 'Hola! Soy @xCrimson_bot';
         sendMessage($chatId, $response);
         break;
+    case '/help':
+        $response = 'Hola! Soy @xCrimson_bot, los comandos que puedes usar son:
+        -/start  para iniciarme.
+        -/info para tener información sobre mi.
+        -/help para saber todos los comandos disponibles.
+        -/noticias para tener todas las noticias del momento.
+        -/deportes para tener todas la noticias del mundo del deporte.';
+        sendMessage($chatId, $response);
+        break;    
     case '/noticias':
         getNoticias($chatId);
         break;
