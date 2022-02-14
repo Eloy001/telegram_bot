@@ -31,7 +31,7 @@ switch($message) {
     case '/noticias':
         getNoticias($chatId);
         break;
-    case '/deportes':
+    case '/deportes' || 'deportes':
         getNoticiasDeportes($chatId);
         break;
     default:
@@ -45,6 +45,8 @@ function sendMessage($chatId, $response) {
     file_get_contents($url);
 }
 
+
+
 function getNoticiasDeportes($chatId){
 
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
@@ -53,13 +55,11 @@ function getNoticiasDeportes($chatId){
     $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
     $json = json_encode($xml);
     $array = json_decode($json, TRUE);
- 
     for ($i=0; $i < 9; $i++) { 
         $titulos = $titulos."\n\n".$array['channel']['item'][$i]['title']."<a href='".$array['channel']['item'][$i]['link']."'> +info</a>";
     }
     sendMessage($chatId, $titulos);
 }
-
 
 function getNoticias($chatId){
     //include("simple_html_dom.php");
