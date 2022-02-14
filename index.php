@@ -31,7 +31,7 @@ switch($message) {
     case '/noticias':
         getNoticias($chatId);
         break;
-    case '/deportes' || 'deportes':
+    case '/deportes':
         getNoticiasDeportes($chatId);
         break;
     default:
