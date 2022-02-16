@@ -29,7 +29,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     break;    
                 case '/noticias':
                     $obligarRespuesta=forzarRespuesta();
-                    $response="¿Que tipo de noticia quieres ver?";
+                    $response="¿Que tipo de noticia quieres ver? (deportes, general)";
                     sendMessage($chatId,$response,$obligarRespuesta);
 
                     break;
@@ -43,12 +43,12 @@ $reply=$update["message"]["reply_to_message"]["text"];
             }
     }else{
 
-        if($reply=="¿Que tipo de noticia quieres ver?"){
+        if($reply=="¿Que tipo de noticia quieres ver? (deportes, general)"){
             switch ($message){
-                case 'deporte':
+                case 'deportes':
                     getNoticiasDeportes($chatId);
                 break;
-                case 'noticias':
+                case 'general':
                     getNoticias($chatId);
                 break;
             }
