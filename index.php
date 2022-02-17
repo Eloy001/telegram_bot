@@ -29,7 +29,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     break;    
                 case '/noticias':
                     $obligarRespuesta=forzarRespuesta();
-                    $response="¿Que tipo de noticia quieres ver? (deportes, generales, culturales)";
+                    $response="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales)";
                     sendMessage($chatId,$response,$obligarRespuesta);
 
                     break;
@@ -43,7 +43,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
             }
     }else{
 
-        if($reply=="¿Que tipo de noticia quieres ver? (deportes, generales, culturales)"){
+        if($reply=="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales)"){
             switch ($message){
                 case 'deportes':
                     getNoticiasDeportes($chatId);
@@ -52,6 +52,9 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     getNoticias($chatId);
                 break;
                 case 'culturales':
+                    getNoticiasCulturales($chatId);
+                break;
+                case 'internacionales':
                     getNoticiasCulturales($chatId);
                 break;
             }
@@ -65,6 +68,19 @@ function sendMessage($chatId, $response, $reply_markup="") {
 function getNoticiasDeportes($chatId){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $url = "https://e00-marca.uecdn.es/rss/futbol/primera-division.xml";
+    $xmlstring = file_get_contents($url, false, $context);
+    $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
+    $json = json_encode($xml);
+    $array = json_decode($json, TRUE);
+    for ($i=0; $i < 9; $i++) { 
+    $titulos = $titulos."\n\n".$array['channel']['item'][$i]['title']."<a href='".$array['channel']['item'][$i]['link']."'> +info</a>";
+    }
+    sendMessage($chatId, $titulos);
+}
+
+function getNoticiasInternacionales($chatId){
+    $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
+    $url = "https://www.abc.es/rss/feeds/abc_Internacional.xml";
     $xmlstring = file_get_contents($url, false, $context);
     $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
     $json = json_encode($xml);
