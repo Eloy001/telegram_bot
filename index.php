@@ -93,9 +93,9 @@ function getNoticias($chatId,$url){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $xmlstring = file_get_contents($url, false, $context);
     $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
-    $json = j0son_encode($xml);
+    $json = json_encode($xml);
     $array = json_decode($json, TRUE);
-    for ($i=0; $i < 9; $i++){ 
+    for ($i=0; $i < 5; $i++){ 
         $titulos = $titulos."\n\n".$array['channel']['item'][$i]['title']."<a href='".$array['channel']['item'][$i]['link']."'> +info</a>";
     }
     sendMessage($chatId, $titulos);
