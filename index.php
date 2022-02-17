@@ -28,7 +28,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     break;    
                 case '/noticias':
                     $obligarRespuesta=forzarRespuesta();
-                    $response="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales)";
+                    $response="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales o economicas)";
                     sendMessage($chatId,$response,$obligarRespuesta);
                     break;
                 default:
@@ -38,7 +38,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
             }
     }else{
 
-        if($reply=="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales)"){
+        if($reply=="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales o economicas)"){
             switch ($message){
                 case 'deportes':
                     getNoticiasDeportes($chatId);
@@ -51,6 +51,9 @@ $reply=$update["message"]["reply_to_message"]["text"];
                 break;
                 case 'internacionales':
                     getNoticiasInternacionales($chatId);
+                break;
+                case 'economicas':
+                    getNoticiasEconomicas($chatId);
                 break;
             }
         }
@@ -86,6 +89,19 @@ function getNoticiasInternacionales($chatId){
     sendMessage($chatId, $titulos);
 }
 
+function getNoticiasEconomicas($chatId){
+    $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
+    $url = "https://e00-expansion.uecdn.es/rss/portada.xml";
+    $xmlstring = file_get_contents($url, false, $context);
+    $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
+    $json = json_encode($xml);
+    $array = json_decode($json, TRUE);
+    for ($i=0; $i < 9; $i++) { 
+    $titulos = $titulos."\n\n".$array['channel']['item'][$i]['title']."<a href='".$array['channel']['item'][$i]['link']."'> +info</a>";
+    }
+    sendMessage($chatId, $titulos);
+}
+
 function getNoticiasCulturales($chatId){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $url = "https://www.abc.es/rss/feeds/abc_ultima.xml";
@@ -103,8 +119,6 @@ function forzarRespuesta(){
     $reply_markup= array ('force_reply' => true, 'selective' => true);
     return json_encode($reply_markup, true);
 }
-
-
 function getNoticias($chatId){
     //include("simple_html_dom.php");
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
