@@ -13,6 +13,7 @@ $urlCulturales="https://www.abc.es/rss/feeds/abc_ultima.xml";
 $urlAvisosEspaña="http://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAE_wah_RSS.xml";
 $urlAvisosInternacionales="https://e00-elmundo.uecdn.es/blogs/elmundo/clima/index.xml";
 $urlNoticias="http://www.europapress.es/rss/rss.aspx";
+
     if(empty($reply)){
 
             switch($message) {
@@ -40,7 +41,7 @@ $urlNoticias="http://www.europapress.es/rss/rss.aspx";
                     break;
                 case '/avisos':
                     $obligarRespuesta=forzarRespuesta();
-                    $response="¿Sobre cual pais quieres saber? (españa, internacionales)";
+                    $response="¿Sobre cual quieres saber? (españa o internacionales)";
                     sendMessage($chatId,$response,$obligarRespuesta);
                     break;
                 default:
@@ -68,7 +69,7 @@ $urlNoticias="http://www.europapress.es/rss/rss.aspx";
                     getNoticias($chatId, $urlEconomicas);
                 break;
             }
-        }if($reply=="¿Sobre cual pais quieres saber? (españa, internacionales)"){
+        }if($reply=="¿Sobre cual quieres saber? (españa o internacionales)"){
             switch ($message){
                 case 'españa':
                     getNoticias($chatId, $urlAvisosEspaña);
