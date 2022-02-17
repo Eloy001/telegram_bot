@@ -55,7 +55,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     getNoticiasCulturales($chatId);
                 break;
                 case 'internacionales':
-                    getNoticiasCulturales($chatId);
+                    getNoticiasInternacionales($chatId);
                 break;
             }
         }
