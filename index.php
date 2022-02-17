@@ -31,6 +31,11 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     $response="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales o economicas)";
                     sendMessage($chatId,$response,$obligarRespuesta);
                     break;
+                case '/avisos meteorologicos':
+                    $obligarRespuesta=forzarRespuesta();
+                    $response="¿Sobre cual comunidad autonoma quieres saber? (andalucia)";
+                    sendMessage($chatId,$response,$obligarRespuesta);
+                    break;
                 default:
                     $response = 'No te he entendido';
                     sendMessage($chatId, $response);
@@ -56,9 +61,14 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     getNoticiasEconomicas($chatId);
                 break;
             }
+        }if($reply=="¿Sobre cual comunidad autonoma quieres saber? (andalucia)"){
+            switch ($message){
+                case 'andalucia':
+                    getAvisosAndalucia($chatId);
+                break;
         }
     }
-
+}
 function sendMessage($chatId, $response, $reply_markup="") {
     $url = $GLOBALS['website'].'/sendMessage?chat_id='.$chatId.'&parse_mode=HTML&text='.urlencode($response)."&reply_markup=".$reply_markup;
     file_get_contents($url);
@@ -75,7 +85,6 @@ function getNoticiasDeportes($chatId){
     }
     sendMessage($chatId, $titulos);
 }
-
 function getNoticiasInternacionales($chatId){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $url = "https://www.abc.es/rss/feeds/abc_Internacional.xml";
@@ -88,7 +97,6 @@ function getNoticiasInternacionales($chatId){
     }
     sendMessage($chatId, $titulos);
 }
-
 function getNoticiasEconomicas($chatId){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $url = "https://e00-expansion.uecdn.es/rss/portada.xml";
@@ -132,4 +140,17 @@ function getNoticias($chatId){
     }
     sendMessage($chatId, $titulos);
 }
+function getAvisosAndalucia($chatId){
+    $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
+    $url = "http://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAC61_RSS.xml";
+    $xmlstring = file_get_contents($url, false, $context);
+    $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
+    $json = json_encode($xml);
+    $array = json_decode($json, TRUE);
+    for ($i=0; $i < 9; $i++) { 
+    $titulos = $titulos."\n\n".$array['channel']['item'][$i]['title']."<a href='".$array['channel']['item'][$i]['link']."'> +info</a>";
+    }
+    sendMessage($chatId, $titulos);
+}
+
 ?>
