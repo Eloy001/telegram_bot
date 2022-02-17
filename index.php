@@ -33,7 +33,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     break;
                 case '/avisos meteorologicos':
                     $obligarRespuesta=forzarRespuesta();
-                    $response="¿Sobre cual comunidad autonoma quieres saber? (andalucia)";
+                    $response="¿Sobre cual pais quieres saber? (españa)";
                     sendMessage($chatId,$response,$obligarRespuesta);
                     break;
                 default:
