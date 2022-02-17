@@ -31,7 +31,7 @@ $urlNoticias="http://www.europapress.es/rss/rss.aspx";
                     -/info para tener información sobre mi.
                     -/help para saber todos los comandos disponibles.
                     -/noticias para tener todas las noticias del momento.
-                    -/avisos para conocer todos los avisos meteorologicos a nivel nacional e internacional';
+                    -/avisos para conocer todos los avisos climaticos a nivel nacional e internacional';
                     sendMessage($chatId, $response);
                     break;    
                 case '/noticias':
