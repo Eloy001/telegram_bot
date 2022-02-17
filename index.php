@@ -45,7 +45,7 @@ $urlNoticias="http://www.europapress.es/rss/rss.aspx";
                     sendMessage($chatId,$response,$obligarRespuesta);
                     break;
                 default:
-                    $response = 'No te he entendido';
+                    $response = 'No te he entendido, puedes usar /help para conocer los comandos disponibles.';
                     sendMessage($chatId, $response);
                     break;
             }
