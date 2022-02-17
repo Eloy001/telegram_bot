@@ -23,18 +23,13 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     -/start  para iniciarme.
                     -/info para tener información sobre mi.
                     -/help para saber todos los comandos disponibles.
-                    -/noticias para tener todas las noticias del momento.
-                    -/deportes para tener todas la noticias del mundo del deporte.';
+                    -/noticias para tener todas las noticias del momento.';
                     sendMessage($chatId, $response);
                     break;    
                 case '/noticias':
                     $obligarRespuesta=forzarRespuesta();
                     $response="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales)";
                     sendMessage($chatId,$response,$obligarRespuesta);
-
-                    break;
-                case '/deportes':
-                    getNoticiasDeportes($chatId);
                     break;
                 default:
                     $response = 'No te he entendido';
