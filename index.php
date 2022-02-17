@@ -61,10 +61,10 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     getNoticiasEconomicas($chatId);
                 break;
             }
-        }if($reply=="¿Sobre cual comunidad autonoma quieres saber? (andalucia)"){
+        }if($reply=="¿Sobre cual pais quieres saber? (españa)"){
             switch ($message){
-                case 'andalucia':
-                    getAvisosAndalucia($chatId);
+                case 'españa':
+                    getAvisosEspaña($chatId);
                 break;
         }
     }
@@ -140,7 +140,7 @@ function getNoticias($chatId){
     }
     sendMessage($chatId, $titulos);
 }
-function getAvisosAndalucia($chatId){
+function getAvisosEspaña($chatId){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $url = "http://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAE_wah_RSS.xml";
     $xmlstring = file_get_contents($url, false, $context);
