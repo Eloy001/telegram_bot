@@ -55,7 +55,7 @@ $urlNoticias="http://www.europapress.es/rss/rss.aspx";
                 case 'deportes':
                     getNoticias($chatId, $urlDeportes);
                 break;
-                case 'general':
+                case 'generales':
                     getNoticias($chatId, $urlNoticias);
                 break;
                 case 'culturales':
