@@ -142,7 +142,7 @@ function getNoticias($chatId){
 }
 function getAvisosAndalucia($chatId){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
-    $url = "https://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAP6118_RSS.xml";
+    $url = "http://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAE_wah_RSS.xml";
     $xmlstring = file_get_contents($url, false, $context);
     $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
     $json = json_encode($xml);
