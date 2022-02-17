@@ -23,7 +23,8 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     -/start  para iniciarme.
                     -/info para tener información sobre mi.
                     -/help para saber todos los comandos disponibles.
-                    -/noticias para tener todas las noticias del momento.';
+                    -/noticias para tener todas las noticias del momento.
+                    -/avisos para conocer todos los avisos meteorologicos a nivel nacional e internacional';
                     sendMessage($chatId, $response);
                     break;    
                 case '/noticias':
@@ -31,7 +32,7 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     $response="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales o economicas)";
                     sendMessage($chatId,$response,$obligarRespuesta);
                     break;
-                case '/avisos meteorologicos':
+                case '/avisos':
                     $obligarRespuesta=forzarRespuesta();
                     $response="¿Sobre cual pais quieres saber? (españa)";
                     sendMessage($chatId,$response,$obligarRespuesta);
@@ -61,10 +62,13 @@ $reply=$update["message"]["reply_to_message"]["text"];
                     getNoticiasEconomicas($chatId);
                 break;
             }
-        }if($reply=="¿Sobre cual pais quieres saber? (españa)"){
+        }if($reply=="¿Sobre cual pais quieres saber? (españa, internacionales)"){
             switch ($message){
                 case 'españa':
                     getAvisosEspaña($chatId);
+                break;
+                case 'internacionales':
+                    getAvisosInternacionales($chatId);
                 break;
         }
     }
@@ -143,6 +147,18 @@ function getNoticias($chatId){
 function getAvisosEspaña($chatId){
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
     $url = "http://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAE_wah_RSS.xml";
+    $xmlstring = file_get_contents($url, false, $context);
+    $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
+    $json = json_encode($xml);
+    $array = json_decode($json, TRUE);
+    for ($i=0; $i < 9; $i++) { 
+    $titulos = $titulos."\n\n".$array['channel']['item'][$i]['title']."<a href='".$array['channel']['item'][$i]['link']."'> +info</a>";
+    }
+    sendMessage($chatId, $titulos);
+}
+function getAvisosInternacionales($chatId){
+    $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
+    $url = "https://e00-elmundo.uecdn.es/blogs/elmundo/clima/index.xml";
     $xmlstring = file_get_contents($url, false, $context);
     $xml = simplexml_load_string($xmlstring, "SimpleXMLElement", LIBXML_NOCDATA);
     $json = json_encode($xml);
