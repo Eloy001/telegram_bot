@@ -1,4 +1,6 @@
 <?php
+
+//PARAMETROS
 $token = '5157341455:AAGNtT2zn5XkdsabqisoDdZvieJZhdyQI5w';
 $website = 'https://api.telegram.org/bot'.$token;
 $input = file_get_contents('php://input');
@@ -6,6 +8,8 @@ $update = json_decode($input, TRUE);
 $chatId = $update['message']['chat']['id'];
 $message = $update['message']['text'];
 $reply=$update["message"]["reply_to_message"]["text"];
+
+//URL'S
 $urlDeportes="https://e00-marca.uecdn.es/rss/futbol/primera-division.xml";
 $urlInternacionales="https://www.abc.es/rss/feeds/abc_Internacional.xml";
 $urlEconomicas="https://e00-expansion.uecdn.es/rss/portada.xml";
@@ -15,7 +19,6 @@ $urlAvisosInternacionales="https://e00-elmundo.uecdn.es/blogs/elmundo/clima/inde
 $urlNoticias="http://www.europapress.es/rss/rss.aspx";
 
     if(empty($reply)){
-
             switch($message) {
                 case '/start':
                     $response = 'Me has iniciado';
@@ -50,7 +53,6 @@ $urlNoticias="http://www.europapress.es/rss/rss.aspx";
                     break;
             }
     }else{
-
         if($reply=="¿Que tipo de noticia quieres ver? (deportes, generales, culturales, internacionales o economicas)"){
             switch ($message){
                 case 'deportes':
@@ -80,15 +82,35 @@ $urlNoticias="http://www.europapress.es/rss/rss.aspx";
         }
     }
 }
+/**
+ * sendMessage es lo que responderá el bot en cada caso
+ *
+ * @param  int $chatId
+ * @param  string $response
+ * @param  string $reply_markup 
+ * @return void
+ */
 function sendMessage($chatId, $response, $reply_markup="") {
     $url = $GLOBALS['website'].'/sendMessage?chat_id='.$chatId.'&parse_mode=HTML&text='.urlencode($response)."&reply_markup=".$reply_markup;
     file_get_contents($url);
 }
 
+/**
+ * forzarRespuesta es para que el usuario tenga que responder a la pregunta hecha por el bot mediante un json
+ *
+ * @return string $reply_markup
+ */
 function forzarRespuesta(){
     $reply_markup= array ('force_reply' => true, 'selective' => true);
     return json_encode($reply_markup, true);
 }
+/**
+ * getNoticias funciona para buscar noticias y mostrarlas en el chat cambiando su url y su id en cada caso
+ *
+ * @param  int $chatId
+ * @param  string $url
+ * @return void
+ */
 function getNoticias($chatId,$url){
     //include("simple_html_dom.php");
     $context = stream_context_create(array('http' =>  array('header' => 'Accept: application/xml')));
